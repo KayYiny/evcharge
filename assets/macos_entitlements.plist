@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!--
+  重新签名 Flet 客户端时使用的权限声明。
+
+  为什么需要：flet pack 打完包会把内置 Flet 客户端改名/换图标后重新 ad-hoc 签名，
+  但签名命令没有携带权限声明（entitlements），原客户端里的
+  com.apple.security.files.user-selected.read-write 就被丢掉了。
+  结果打包版点「相册识别」弹出系统文件选择器时报错：
+
+      PlatformException(ENTITLEMENT_NOT_FOUND,
+        Either the Read-Only or Read-Write entitlement is required for this action.)
+
+  这里按 Flet 官方 macOS 模板的默认值补齐权限，构建脚本打包后会重新签一次。
+  注意：XML 注释里不能出现连续两个减号（会破坏 plist 解析）。
+-->
+<plist version="1.0">
+<dict>
+    <!-- 不做沙箱：本程序需要读写用户选的文件、联网调用 AI 接口 -->
+    <key>com.apple.security.app-sandbox</key>
+    <false/>
+
+    <!-- 关键：允许访问用户在文件选择器里主动选中的文件（相册识别用） -->
+    <key>com.apple.security.files.user-selected.read-write</key>
+    <true/>
+
+    <!-- 联网：调用大模型 / 车牌识别接口 -->
+    <key>com.apple.security.network.client</key>
+    <true/>
+
+    <!-- Flutter 运行时需要（Intel 上尤其需要 JIT） -->
+    <key>com.apple.security.cs.allow-jit</key>
+    <true/>
+    <key>com.apple.security.cs.allow-unsigned-executable-memory</key>
+    <true/>
+</dict>
+</plist>

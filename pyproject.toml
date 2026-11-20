@@ -1,0 +1,40 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "evcharge"
+version = "1.1.0"
+description = "国网高速服务区充电监控与计费系统（Flet + 分时电价）"
+authors = [{ name = "HuoLin", email = "PuppyHuoLin@outlook.com" }]
+readme = "README.md"
+license = { file = "LICENSE" }
+requires-python = ">=3.10"
+dynamic = ["dependencies"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+]
+
+[project.scripts]
+evcharge = "evcharge.cli:main"
+
+[project.optional-dependencies]
+# 打包成 EXE / .app 时安装：pip install -e ".[build]"
+build = ["pyinstaller>=6.6"]
+# API Key 想存系统钥匙串时安装（可选）：pip install -e ".[secure]"
+secure = ["keyring>=24"]
+
+[tool.setuptools]
+package-dir = { "" = "src" }
+
+[tool.setuptools.packages.find]
+where = ["src"]
+include = ["evcharge*"]
+
+# 依赖只在 requirements.txt 维护一份，避免两处不同步
+[tool.setuptools.dynamic]
+dependencies = { file = ["requirements.txt"] }

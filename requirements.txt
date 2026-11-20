@@ -1,0 +1,9 @@
+# 国网高速服务区充电监控与计费系统 — 依赖清单
+# 安装：pip install -e .        （pyproject.toml 直接读取本文件，改这里即可）
+# 或：  pip install -r requirements.txt
+# 开发/测试仅用标准库 unittest，无需额外依赖
+
+flet>=1.1.1
+pandas>=2.0.0
+matplotlib>=3.8.0
+requests>=2.31.0
